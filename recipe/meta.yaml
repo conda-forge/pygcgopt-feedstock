@@ -9,7 +9,7 @@ source:
   sha256: e5e1e0c5b8813a8149874ec73667c36c831b64ecfbef1a2e9d9b2e4103a1ed13
 
 build:
-  number: 1
+  number: 2
   skip: true  # [win]
   script: {{ PYTHON }} -m pip install . -vv
   script_env:
@@ -21,6 +21,7 @@ requirements:
     - cross-python_{{ target_platform }}       # [build_platform != target_platform]
     - cython                                   # [build_platform != target_platform]
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
   host:
     - scip >=8.0.0
