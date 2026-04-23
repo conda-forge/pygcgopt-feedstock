@@ -1,4 +1,4 @@
-{% set version = "0.3.1" %}
+{% set version = "0.4.0" %}
 
 package:
   name: pygcgopt
@@ -6,32 +6,38 @@ package:
 
 source:
   url: https://github.com/scipopt/PyGCGOpt/archive/v{{ version }}.tar.gz
-  sha256: e5e1e0c5b8813a8149874ec73667c36c831b64ecfbef1a2e9d9b2e4103a1ed13
+  sha256: 99978a6a313e12028169e9c6783d7d14855a307fcce0003dd869abe2656f2362
 
 build:
-  number: 1
-  skip: true  # [win]
-  script: {{ PYTHON }} -m pip install . -vv
+  number: 0
+  script: '"${PYTHON}" -m pip install --no-deps .'  # [unix]
+  script: '"%PYTHON%"  -m pip install --no-deps .'  # [win]
   script_env:
     - GCGOPTDIR="${PREFIX}"
 
 requirements:
   build:
-    - python                                   # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}       # [build_platform != target_platform]
-    - cython                                   # [build_platform != target_platform]
+    - python                                 # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - cython >=3                              # [build_platform != target_platform]
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
+    - python  # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}  # [build_platform != target_platform]
   host:
-    - scip >=8.0.0
-    - gcg >=3.5.0
+    - scip
+    - gcg
     - python
+    - setuptools
     - pip
-    - cython >=0.29.21
-    - pyscipopt >=4.0.0
+    - cython >=3
+    - pyscipopt >=5.2.1
   run:
+    - scip
+    - gcg
     - python
-    - pyscipopt >=4.0.0
+    - pyscipopt >=5.2.1
 
 test:
   imports:
